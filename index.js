@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import path from "path";
 import fileDirName from "./utils/dirname.js";
+import router from "./routes/index.js";
 
 const app = express();
 
@@ -12,10 +13,7 @@ app.use(express.static(publicDirPath));
 
 app.use(morgan('dev'));
 
-app.get('/',(req,res)=>{
-    const homeDir = path.join(__dirname,'public','home.html');
-    res.sendFile(homeDir);
-});
+app.use('/',router);
 
 const port = 2611 || process.env.PORT;
 
