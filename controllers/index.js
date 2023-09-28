@@ -42,7 +42,10 @@ export async function getDownloadFileById(req,res){
         const {fileId} = req.params;
         const filePath = path.join(__dirname, '..','outputs',fileId);
         res.download(filePath,(err)=>{
-            res.status(401).json({error: "Something went wrong downloading file"});
+            if(err){
+                console.log(err);
+                res.status(401).json({error: "Something went wrong downloading file"});
+            }
         });
     } catch (e) {
         res.status(500).json({ error: "Server error" });
