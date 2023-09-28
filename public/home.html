@@ -4,8 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free TinyPNG</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Free TinyPNG</h1>
+    <h1 id="title">Free TinyPNG</h1>
+
+    <div id="container">
+        <form enctype="multipart/form-data">
+            <label for="upload">Select files to upload</label>
+            <input type="file" id="upload" multiple>
+
+            <button id="submitBtn">Submit</button>
+        </form>
+
+        <div id="download-zone"></div>
+        <div id="notifications"></div>
+    </div>
 </body>
 </html>
