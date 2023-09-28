@@ -1,6 +1,7 @@
 const submitBtn = document.getElementById('submitBtn');
 const fileInput = document.getElementById('upload');
-const notifications = document.getElementById('notifications')
+const notifications = document.getElementById('notifications');
+const downloadZone = document.getElementById('download-zone');
 
 submitBtn.addEventListener('click',async (e)=>{
     e.preventDefault();
@@ -19,6 +20,7 @@ submitBtn.addEventListener('click',async (e)=>{
 
     try{
         toastNotification('info','Processing...');
+        submitBtn.disabled = true;
         const res = await fetch('/resize-images',{
             method: 'POST',
             body: formData
@@ -30,12 +32,17 @@ submitBtn.addEventListener('click',async (e)=>{
             return;
         }
 
-        const data = await res.json();
-        console.log(data);
+        const {downloadLinks} = await res.json();
+
+        createDownloadableLinks(downloadLinks);
+
         toastNotification('success','Image resize done',5000);
+        fileInput.value = "";
     }catch(e){
         console.log(e);
         toastNotification('error','Something went wrong',5000);
+    }finally{
+        submitBtn.disabled = false;
     }
 
 });
@@ -53,5 +60,14 @@ function toastNotification(type ,message, time){
         setTimeout(()=>{
             notifications.innerHTML = "";
         },time);
+    }
+}
+
+function createDownloadableLinks(links){
+    for( const link of links){
+        const aTag = document.createElement('a');
+        aTag.href = `/download/${link}`;
+        aTag.innerText = 'Download image here';
+        downloadZone.append(aTag);
     }
 }
